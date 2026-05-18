@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "oU3fX8fxJI8=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Application\\SuperStock.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\rodri\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
+    "C:\\Users\\rodri\\.nuget\\packages\\mongodb.bson\\3.4.0\\mongodb.bson.3.4.0.nupkg.sha512"
+  ],
+  "logs": []
+}

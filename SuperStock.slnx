@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="SuperStock.Domain/SuperStock.Domain.csproj" />
+  <Project Path="SuperStock.Infrastructure/SuperStock.Infrastructure.csproj" />
+  <Project Path="SuperStock.Application/SuperStock.Application.csproj" />
+  <Project Path="SuperStock.API/SuperStock.API.csproj" />
+</Solution>
