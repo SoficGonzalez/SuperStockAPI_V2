@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  superstock-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: superstock-api
+    ports:
+      - "8080:8080"
+    environment:
+      # Corregido: Coincide con la estructura de tu appsettings ("MongoDb:ConnectionString") 
+      # y apunta a los puertos internos reales de Docker (27017)
+      - MongoDb__ConnectionString=mongodb://mongo1:27017,mongo2:27017,mongo3:27017/superstock_db?replicaSet=rs0&connectTimeoutMS=10000&authSource=admin
+      - MongoDb__DatabaseName=superstock_sv
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - mongo-init
+    networks:
+      - mongo-cluster
+
+  # Nodos de MongoDB
+  mongo1:
+    image: mongo:7.0
+    container_name: mongo1
+    command: mongod --replSet rs0 --bind_ip_all
+    ports:
+      - "27018:27017" # Mapeos opcionales para usar herramientas externas como Compass
+    volumes:
+      - mongo1_data:/data/db
+    networks:
+      - mongo-cluster
+
+  mongo2:
+    image: mongo:7.0
+    container_name: mongo2
+    command: mongod --replSet rs0 --bind_ip_all
+    ports:
+      - "27019:27017"
+    volumes:
+      - mongo2_data:/data/db
+    networks:
+      - mongo-cluster
+
+  mongo3:
+    image: mongo:7.0
+    container_name: mongo3
+    command: mongod --replSet rs0 --bind_ip_all
+    ports:
+      - "27020:27017"
+    volumes:
+      - mongo3_data:/data/db
+    networks:
+      - mongo-cluster
+
+  # Configuración e inicialización interna del clúster
+  mongo-init:
+    image: mongo:7.0
+    container_name: mongo-init
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    networks:
+      - mongo-cluster
+    # ATENCIÓN: Todos los miembros apuntan al puerto interno de Docker 27017
+    entrypoint: [ "bash", "-c", "sleep 5 && mongosh --host mongo1:27017 --eval 'rs.initiate({_id: \"rs0\", members: [{_id: 0, host: \"mongo1:27017\", priority: 2}, {_id: 1, host: \"mongo2:27017\", priority: 1}, {_id: 2, host: \"mongo3:27017\", priority: 1}]})'" ]
+
+volumes:
+  mongo1_data:
+  mongo2_data:
+  mongo3_data:
+
+networks:
+  mongo-cluster:
+    driver: bridge

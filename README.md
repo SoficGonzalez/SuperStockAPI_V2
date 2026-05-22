@@ -6,19 +6,79 @@ Proyecto de Cátedra - Base de Datos II (No Relacionales) - Entrega 2.
 ## Requisitos Previos
 
 - .NET 10 SDK
-- MongoDB 7.0+ (corriendo en localhost:27017)
+- Docker Engine + Docker Compose v2 (`docker compose`)
 - Un editor como Visual Studio, Rider o VS Code
+
+## MongoDB Replica Set local (3 nodos)
+
+La API usa `WriteConcern.WMajority` y `ReadConcern.Majority`, por lo que requiere un **replica set** (no un `mongod` standalone).
+
+### 1. Levantar el clúster completo
+
+Desde la raíz del repositorio:
+
+```bash
+docker compose up -d
+```
+
+El `docker-compose.yml` levanta en una sola red interna (`mongo-cluster`):
+
+- `mongo1`, `mongo2`, `mongo3` — nodos del replica set `rs0`
+- `mongo-init` — inicializa el replica set automáticamente con `rs.initiate` (se ejecuta una sola vez y termina)
+- `superstock-api` — la API, que espera a que `mongo-init` complete antes de arrancar
+
+Puertos expuestos en el host (para herramientas externas como Compass):
+
+| Servicio | Puerto host |
+|----------|-------------|
+| mongo1   | 27018       |
+| mongo2   | 27019       |
+| mongo3   | 27020       |
+
+Comandos útiles:
+
+```bash
+docker compose down          # detener y eliminar contenedores
+docker compose logs -f       # seguir logs de todos los servicios
+docker compose ps            # estado de los contenedores
+```
+
+### 2. Connection string
+
+**Dentro de Docker** (la API en contenedor): la variable de entorno `MongoDb__ConnectionString` del compose usa los nombres de servicio internos:
+
+```text
+mongodb://mongo1:27017,mongo2:27017,mongo3:27017/superstock_db?replicaSet=rs0
+```
+
+**Desarrollo local** (`dotnet run`): `SuperStock.API/appsettings.Development.json` apunta a los puertos del host:
+
+```text
+mongodb://localhost:27018,localhost:27019,localhost:27020/superstock_db?replicaSet=rs0
+```
+
+`appsettings.json` puede seguir apuntando a Atlas u otro entorno; al ejecutar con `ASPNETCORE_ENVIRONMENT=Development` (por defecto en `dotnet run`) se usa el replica set local.
+
+### 3. Probar failover (opcional)
+
+```bash
+docker stop mongo1
+docker compose logs superstock-api   # la API continúa operando
+docker start mongo1
+```
+
+Tras unos segundos, `mongo2` o `mongo3` habrá sido elegido `PRIMARY`; la API no necesita cambiar la URI.
 
 ## Configuración
 
-El archivo `SuperStock.API/appsettings.json` contiene la configuración de conexión:
+`SuperStock.API/appsettings.json` — configuración base (p. ej. Atlas en producción).
+
+`SuperStock.API/appsettings.Development.json` — replica set local Docker (ver arriba).
+
+JWT y demás claves siguen en `appsettings.json`:
 
 ```json
 {
-  "MongoDb": {
-    "ConnectionString": "mongodb://localhost:27017",
-    "DatabaseName": "superstock_sv"
-  },
   "JWTKey": "clave-super-secreta-superstock-sv-2026-muy-larga-123456",
   "JWTIssuer": "superstock-api",
   "JWTLifeTime": 10
