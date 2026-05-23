@@ -70,7 +70,7 @@ namespace SuperStock.Infrastructure.Persistence
                 // CONCEPTO: LocalDataCenter es obligatorio cuando se proveen contact points.
                 .WithLoadBalancingPolicy(new DCAwareRoundRobinPolicy(_settings.LocalDataCenter))
                 // CONCEPTO: QUORUM = mayoria de replicas. Con RF=2 requiere 2 nodos UP.
-                .WithQueryOptions(new QueryOptions().SetConsistencyLevel(ConsistencyLevel.Quorum))
+                .WithQueryOptions(new QueryOptions().SetConsistencyLevel(ConsistencyLevel.LocalOne))
                 .Build();
 
             // Primer connect SIN keyspace (puede no existir todavia).
