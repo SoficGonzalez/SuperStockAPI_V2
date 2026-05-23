@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
     "net10.0": {
       "BCrypt.Net-Next/4.0.3": {
@@ -15,15 +15,33 @@
           }
         }
       },
-      "DnsClient/1.6.1": {
+      "CassandraCSharpDriver/3.22.0": {
         "type": "package",
+        "dependencies": {
+          "K4os.Compression.LZ4": "1.1.11",
+          "Newtonsoft.Json": "9.0.1",
+          "System.Management": "4.7.0"
+        },
         "compile": {
-          "lib/net5.0/DnsClient.dll": {
+          "lib/netstandard2.0/Cassandra.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net5.0/DnsClient.dll": {
+          "lib/netstandard2.0/Cassandra.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "K4os.Compression.LZ4/1.1.11": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/K4os.Compression.LZ4.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/K4os.Compression.LZ4.dll": {
             "related": ".xml"
           }
         }
@@ -152,6 +170,15 @@
           }
         }
       },
+      "Microsoft.NETCore.Platforms/3.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard1.0/_._": {}
+        },
+        "runtime": {
+          "lib/netstandard1.0/_._": {}
+        }
+      },
       "Microsoft.OpenApi/2.4.1": {
         "type": "package",
         "compile": {
@@ -178,44 +205,15 @@
           }
         }
       },
-      "MongoDB.Driver/3.4.0": {
+      "Newtonsoft.Json/9.0.1": {
         "type": "package",
-        "dependencies": {
-          "DnsClient": "1.6.1",
-          "MongoDB.Bson": "3.4.0",
-          "SharpCompress": "0.30.1",
-          "Snappier": "1.0.0",
-          "ZstdSharp.Port": "0.7.3"
-        },
         "compile": {
-          "lib/net6.0/MongoDB.Driver.dll": {
+          "lib/netstandard1.0/Newtonsoft.Json.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/MongoDB.Driver.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "SharpCompress/0.30.1": {
-        "type": "package",
-        "compile": {
-          "lib/net5.0/SharpCompress.dll": {}
-        },
-        "runtime": {
-          "lib/net5.0/SharpCompress.dll": {}
-        }
-      },
-      "Snappier/1.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net5.0/Snappier.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net5.0/Snappier.dll": {
+          "lib/netstandard1.0/Newtonsoft.Json.dll": {
             "related": ".xml"
           }
         }
@@ -286,6 +284,19 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "System.CodeDom/4.7.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.CodeDom.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.CodeDom.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "System.IdentityModel.Tokens.Jwt/8.16.0": {
         "type": "package",
         "dependencies": {
@@ -303,13 +314,27 @@
           }
         }
       },
-      "ZstdSharp.Port/0.7.3": {
+      "System.Management/4.7.0": {
         "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "3.1.0",
+          "System.CodeDom": "4.7.0"
+        },
         "compile": {
-          "lib/net7.0/ZstdSharp.dll": {}
+          "ref/netstandard2.0/System.Management.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net7.0/ZstdSharp.dll": {}
+          "lib/netstandard2.0/System.Management.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/netcoreapp2.0/System.Management.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
         }
       },
       "SuperStock.Application/1.0.0": {
@@ -344,8 +369,8 @@
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
           "BCrypt.Net-Next": "4.0.3",
+          "CassandraCSharpDriver": "3.22.0",
           "Microsoft.IdentityModel.Tokens": "8.16.0",
-          "MongoDB.Driver": "3.4.0",
           "SuperStock.Domain": "1.0.0",
           "System.IdentityModel.Tokens.Jwt": "8.16.0"
         },
@@ -390,28 +415,39 @@
         "readme.md"
       ]
     },
-    "DnsClient/1.6.1": {
-      "sha512": "4H/f2uYJOZ+YObZjpY9ABrKZI+JNw3uizp6oMzTXwDw6F+2qIPhpRl/1t68O/6e98+vqNiYGu+lswmwdYUy3gg==",
+    "CassandraCSharpDriver/3.22.0": {
+      "sha512": "T5vjErmZ42Q1TAzbYSJvOrAzOZmb/d+v3OoIYrKfbcqjDuvedd61e0bAaaLpgiujPBBO+qFpxR4T0WSXkMr/fA==",
       "type": "package",
-      "path": "dnsclient/1.6.1",
+      "path": "cassandracsharpdriver/3.22.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "dnsclient.1.6.1.nupkg.sha512",
-        "dnsclient.nuspec",
-        "icon.png",
-        "lib/net45/DnsClient.dll",
-        "lib/net45/DnsClient.xml",
-        "lib/net471/DnsClient.dll",
-        "lib/net471/DnsClient.xml",
-        "lib/net5.0/DnsClient.dll",
-        "lib/net5.0/DnsClient.xml",
-        "lib/netstandard1.3/DnsClient.dll",
-        "lib/netstandard1.3/DnsClient.xml",
-        "lib/netstandard2.0/DnsClient.dll",
-        "lib/netstandard2.0/DnsClient.xml",
-        "lib/netstandard2.1/DnsClient.dll",
-        "lib/netstandard2.1/DnsClient.xml"
+        "LICENSE.md",
+        "cassandracsharpdriver.3.22.0.nupkg.sha512",
+        "cassandracsharpdriver.nuspec",
+        "lib/net452/Cassandra.dll",
+        "lib/net452/Cassandra.xml",
+        "lib/netstandard2.0/Cassandra.dll",
+        "lib/netstandard2.0/Cassandra.xml"
+      ]
+    },
+    "K4os.Compression.LZ4/1.1.11": {
+      "sha512": "RNvJw0UGkedPhCqVBNIogtfQebY+bQt0PN7xDbVe5LWLra0ZEqPfjPSl7iStj3rgDnkqkkTTpm+vCX3hU1qKmA==",
+      "type": "package",
+      "path": "k4os.compression.lz4/1.1.11",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "k4os.compression.lz4.1.1.11.nupkg.sha512",
+        "k4os.compression.lz4.nuspec",
+        "lib/net45/K4os.Compression.LZ4.dll",
+        "lib/net45/K4os.Compression.LZ4.xml",
+        "lib/net46/K4os.Compression.LZ4.dll",
+        "lib/net46/K4os.Compression.LZ4.xml",
+        "lib/netstandard1.6/K4os.Compression.LZ4.dll",
+        "lib/netstandard1.6/K4os.Compression.LZ4.xml",
+        "lib/netstandard2.0/K4os.Compression.LZ4.dll",
+        "lib/netstandard2.0/K4os.Compression.LZ4.xml"
       ]
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/10.0.5": {
@@ -840,6 +876,23 @@
         "microsoft.identitymodel.tokens.nuspec"
       ]
     },
+    "Microsoft.NETCore.Platforms/3.1.0": {
+      "sha512": "z7aeg8oHln2CuNulfhiLYxCVMPEwBl3rzicjvIX+4sUuCwvXw5oXQEtbiU2c0z4qYL5L3Kmx0mMA/+t/SbY67w==",
+      "type": "package",
+      "path": "microsoft.netcore.platforms/3.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netstandard1.0/_._",
+        "microsoft.netcore.platforms.3.1.0.nupkg.sha512",
+        "microsoft.netcore.platforms.nuspec",
+        "runtime.json",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "Microsoft.OpenApi/2.4.1": {
       "sha512": "u7QhXCISMQuab3flasb1hoaiERmUqyWsW7tmQODyILoQ7mJV5IRGM+2KKZYo0QUfC13evEOcHAb6TPWgqEQtrw==",
       "type": "package",
@@ -877,59 +930,31 @@
         "packageIcon.png"
       ]
     },
-    "MongoDB.Driver/3.4.0": {
-      "sha512": "+8vGdlbbzfPfQzCI00nPX59vH+5Nfumb2lyXf7xdIcAa05JPBdXFc/vWw0rPQOqIWYWfTmvQsxUgUXyzk0AKGw==",
+    "Newtonsoft.Json/9.0.1": {
+      "sha512": "U82mHQSKaIk+lpSVCbWYKNavmNH1i5xrExDEquU1i6I5pV6UMOqRnJRSlKO3cMPfcpp0RgDY+8jUXHdQ4IfXvw==",
       "type": "package",
-      "path": "mongodb.driver/3.4.0",
+      "path": "newtonsoft.json/9.0.1",
+      "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "README.md",
-        "lib/net472/MongoDB.Driver.dll",
-        "lib/net472/MongoDB.Driver.xml",
-        "lib/net6.0/MongoDB.Driver.dll",
-        "lib/net6.0/MongoDB.Driver.xml",
-        "lib/netstandard2.1/MongoDB.Driver.dll",
-        "lib/netstandard2.1/MongoDB.Driver.xml",
-        "mongodb.driver.3.4.0.nupkg.sha512",
-        "mongodb.driver.nuspec",
-        "packageIcon.png"
-      ]
-    },
-    "SharpCompress/0.30.1": {
-      "sha512": "XqD4TpfyYGa7QTPzaGlMVbcecKnXy4YmYLDWrU+JIj7IuRNl7DH2END+Ll7ekWIY8o3dAMWLFDE1xdhfIWD1nw==",
-      "type": "package",
-      "path": "sharpcompress/0.30.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net461/SharpCompress.dll",
-        "lib/net5.0/SharpCompress.dll",
-        "lib/netcoreapp3.1/SharpCompress.dll",
-        "lib/netstandard2.0/SharpCompress.dll",
-        "lib/netstandard2.1/SharpCompress.dll",
-        "sharpcompress.0.30.1.nupkg.sha512",
-        "sharpcompress.nuspec"
-      ]
-    },
-    "Snappier/1.0.0": {
-      "sha512": "rFtK2KEI9hIe8gtx3a0YDXdHOpedIf9wYCEYtBEmtlyiWVX3XlCNV03JrmmAi/Cdfn7dxK+k0sjjcLv4fpHnqA==",
-      "type": "package",
-      "path": "snappier/1.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "COPYING.txt",
-        "lib/net5.0/Snappier.dll",
-        "lib/net5.0/Snappier.xml",
-        "lib/netcoreapp3.0/Snappier.dll",
-        "lib/netcoreapp3.0/Snappier.xml",
-        "lib/netstandard2.0/Snappier.dll",
-        "lib/netstandard2.0/Snappier.xml",
-        "lib/netstandard2.1/Snappier.dll",
-        "lib/netstandard2.1/Snappier.xml",
-        "snappier.1.0.0.nupkg.sha512",
-        "snappier.nuspec"
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.9.0.1.nupkg.sha512",
+        "newtonsoft.json.nuspec",
+        "tools/install.ps1"
       ]
     },
     "Swashbuckle.AspNetCore/10.1.5": {
@@ -1009,6 +1034,29 @@
         "swashbuckle.aspnetcore.swaggerui.nuspec"
       ]
     },
+    "System.CodeDom/4.7.0": {
+      "sha512": "Hs9pw/kmvH3lXaZ1LFKj3pLQsiGfj2xo3sxSzwiLlRL6UcMZUTeCfoJ9Udalvn3yq5dLlPEZzYegrTQ1/LhPOQ==",
+      "type": "package",
+      "path": "system.codedom/4.7.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.CodeDom.dll",
+        "lib/net461/System.CodeDom.xml",
+        "lib/netstandard2.0/System.CodeDom.dll",
+        "lib/netstandard2.0/System.CodeDom.xml",
+        "ref/net461/System.CodeDom.dll",
+        "ref/net461/System.CodeDom.xml",
+        "ref/netstandard2.0/System.CodeDom.dll",
+        "ref/netstandard2.0/System.CodeDom.xml",
+        "system.codedom.4.7.0.nupkg.sha512",
+        "system.codedom.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "System.IdentityModel.Tokens.Jwt/8.16.0": {
       "sha512": "rrs2u7DRMXQG2yh0oVyF/vLwosfRv20Ld2iEpYcKwQWXHjfV+gFXNQsQ9p008kR9Ou4pxBs68Q6/9zC8Gi1wjg==",
       "type": "package",
@@ -1035,22 +1083,28 @@
         "system.identitymodel.tokens.jwt.nuspec"
       ]
     },
-    "ZstdSharp.Port/0.7.3": {
-      "sha512": "U9Ix4l4cl58Kzz1rJzj5hoVTjmbx1qGMwzAcbv1j/d3NzrFaESIurQyg+ow4mivCgkE3S413y+U9k4WdnEIkRA==",
+    "System.Management/4.7.0": {
+      "sha512": "IY+uuGhgzWiCg21i8IvQeY/Z7m1tX8VuPF+ludfn7iTCaccTtJo5HkjZbBEL8kbBubKhAKKtNXr7uMtmAc28Pw==",
       "type": "package",
-      "path": "zstdsharp.port/0.7.3",
+      "path": "system.management/4.7.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/net461/ZstdSharp.dll",
-        "lib/net5.0/ZstdSharp.dll",
-        "lib/net6.0/ZstdSharp.dll",
-        "lib/net7.0/ZstdSharp.dll",
-        "lib/netcoreapp3.1/ZstdSharp.dll",
-        "lib/netstandard2.0/ZstdSharp.dll",
-        "lib/netstandard2.1/ZstdSharp.dll",
-        "zstdsharp.port.0.7.3.nupkg.sha512",
-        "zstdsharp.port.nuspec"
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net45/_._",
+        "lib/netstandard2.0/System.Management.dll",
+        "lib/netstandard2.0/System.Management.xml",
+        "ref/net45/_._",
+        "ref/netstandard2.0/System.Management.dll",
+        "ref/netstandard2.0/System.Management.xml",
+        "runtimes/win/lib/net45/_._",
+        "runtimes/win/lib/netcoreapp2.0/System.Management.dll",
+        "runtimes/win/lib/netcoreapp2.0/System.Management.xml",
+        "system.management.4.7.0.nupkg.sha512",
+        "system.management.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
     "SuperStock.Application/1.0.0": {
@@ -1080,23 +1134,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\rodri\\.nuget\\packages\\": {},
+    "C:\\Users\\sofia\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\SuperStock.API.csproj",
+      "projectUniqueName": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.API\\SuperStock.API.csproj",
       "projectName": "SuperStock.API",
-      "projectPath": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\SuperStock.API.csproj",
-      "packagesPath": "C:\\Users\\rodri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\obj\\",
+      "projectPath": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.API\\SuperStock.API.csproj",
+      "packagesPath": "C:\\Users\\sofia\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\rodri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\sofia\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1105,6 +1159,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1112,14 +1167,14 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Application\\SuperStock.Application.csproj": {
-              "projectPath": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Application\\SuperStock.Application.csproj"
+            "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.Application\\SuperStock.Application.csproj": {
+              "projectPath": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.Application\\SuperStock.Application.csproj"
             },
-            "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Domain\\SuperStock.Domain.csproj": {
-              "projectPath": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Domain\\SuperStock.Domain.csproj"
+            "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.Domain\\SuperStock.Domain.csproj": {
+              "projectPath": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.Domain\\SuperStock.Domain.csproj"
             },
-            "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj"
+            "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj": {
+              "projectPath": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj"
             }
           }
         }
@@ -1134,7 +1189,7 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.200"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net10.0": {
@@ -1173,7 +1228,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -1590,5 +1645,17 @@
         }
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Newtonsoft.Json' 9.0.1 has a known high severity vulnerability, https://github.com/advisories/GHSA-5crp-9r3c-p9vr",
+      "libraryId": "Newtonsoft.Json",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }

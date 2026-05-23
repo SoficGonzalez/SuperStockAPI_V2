@@ -4,14 +4,13 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace SuperStock.Domain.Entities
 {
     /// <summary>
-    /// Entidad base para todas las colecciones MongoDB.
-    /// Usa string como Id pero mapeado al _id de MongoDB.
+    /// Entidad base para todas las tablas de Cassandra.
+    /// Usa Guid (UUID en CQL) como Id, sin atributos de mapeo:
+    /// el mapeo a CQL se hace explicitamente en los repositorios.
     /// </summary>
     public class BaseEntity
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = string.Empty;
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

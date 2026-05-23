@@ -13,7 +13,5 @@ namespace SuperStock.Domain.Interfaces.Repositories
             int pageSize = 10);
 
         Task<Producto?> GetByCodigoBarrasAsync(string codigoBarras);
-
-        Task<Producto?> GetByMongoIdAsync(string id);
     }
 }

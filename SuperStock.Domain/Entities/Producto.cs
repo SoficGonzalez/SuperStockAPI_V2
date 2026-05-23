@@ -1,9 +1,9 @@
 namespace SuperStock.Domain.Entities
 {
     /// <summary>
-    /// Producto con esquema polimorfico.
-    /// El campo Detalles es un diccionario flexible que almacena atributos
-    /// especificos de cada categoria sin requerir cambios de esquema.
+    /// Producto con esquema polimorfico (limitado en Cassandra).
+    /// El campo Detalles se mapea a un map<text,text> en CQL,
+    /// que permite cualquier clave-valor pero pierde el tipado original.
     /// </summary>
     public class Producto : BaseEntity
     {
@@ -30,27 +30,25 @@ namespace SuperStock.Domain.Entities
         public bool Activo { get; set; } = true;
 
         /// <summary>
-        /// Referencia embebida al proveedor (desnormalizada para lectura rapida).
+        /// Referencia desnormalizada al proveedor.
+        /// En Cassandra se aplanan los campos como columnas individuales
+        /// (proveedor_id, proveedor_nombre, proveedor_telefono).
         /// </summary>
         public ProveedorRef? Proveedor { get; set; }
 
         /// <summary>
-        /// Atributos especificos de la categoria del producto.
-        /// Ejemplos:
-        ///   Perecederos: { "fecha_vencimiento": "2026-03-15", "temperatura": "0-4 C" }
-        ///   Limpieza:    { "concentracion": "5%", "advertencias": ["inflamable"] }
-        /// Se almacena como BsonDocument en MongoDB, mapeado a Dictionary en C#.
+        /// Atributos adicionales clave-valor. En Cassandra es map<text,text>.
+        /// Los valores numericos/booleanos se almacenan como string serializado.
         /// </summary>
-        public Dictionary<string, object>? Detalles { get; set; }
+        public Dictionary<string, string>? Detalles { get; set; }
     }
 
     /// <summary>
     /// Referencia embebida de proveedor dentro de un producto.
-    /// Evita JOINs en la consulta mas frecuente (lectura en POS).
     /// </summary>
     public class ProveedorRef
     {
-        public string ProveedorId { get; set; } = string.Empty;
+        public Guid ProveedorId { get; set; }
 
         public string Nombre { get; set; } = string.Empty;
 

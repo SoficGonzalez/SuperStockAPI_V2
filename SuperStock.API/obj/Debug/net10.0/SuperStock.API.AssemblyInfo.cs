@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SuperStock.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b5b80baad7d4fd05033abf0cd374a90eb5151648")]
 [assembly: System.Reflection.AssemblyProductAttribute("SuperStock.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SuperStock.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

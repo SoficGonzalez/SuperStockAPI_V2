@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <!-- MongoDB.Driver replaces EF Core + SqlServer -->
+    <PackageReference Include="CassandraCSharpDriver" Version="3.22.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.5" />
-    <PackageReference Include="MongoDB.Driver" Version="3.4.0" />
     <!-- BCrypt replaces ASP.NET Identity password hashing -->
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <!-- JWT dependencies (same as Tickets) -->

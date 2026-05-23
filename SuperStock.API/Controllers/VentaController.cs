@@ -19,15 +19,11 @@ namespace SuperStock.API.Controllers
             _ventaService = ventaService;
         }
 
-        /// <summary>
-        /// GET /api/venta?fechaDesde=2026-01-01&amp;fechaHasta=2026-01-31&amp;estado=completada&amp;page=1&amp;pageSize=10
-        /// Busqueda con filtros: rango de fechas, cajero, estado + paginacion.
-        /// </summary>
         [HttpGet]
         public async Task<IActionResult> Search(
             [FromQuery] DateTime? fechaDesde,
             [FromQuery] DateTime? fechaHasta,
-            [FromQuery] string? cajeroId,
+            [FromQuery] Guid? cajeroId,
             [FromQuery] string? estado,
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10)
@@ -36,11 +32,8 @@ namespace SuperStock.API.Controllers
             return Ok(result);
         }
 
-        /// <summary>
-        /// GET /api/venta/{id}
-        /// </summary>
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
         {
             var venta = await _ventaService.GetById(id);
             if (venta == null)
@@ -49,11 +42,6 @@ namespace SuperStock.API.Controllers
             return Ok(venta);
         }
 
-        /// <summary>
-        /// POST /api/venta
-        /// Registrar una nueva venta. El cajero se toma del JWT.
-        /// Los precios y nombres se obtienen del catalogo (snapshot al momento de la venta).
-        /// </summary>
         [HttpPost]
         [Authorize(Roles = "admin,cajero")]
         public async Task<IActionResult> Create([FromBody] VentaDTO dto)
@@ -61,10 +49,10 @@ namespace SuperStock.API.Controllers
             if (dto == null || dto.Items.Count == 0)
                 return BadRequest(new { Message = "La venta debe tener al menos un item." });
 
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userIdStr = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             var userName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value;
 
-            if (string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(userIdStr) || !Guid.TryParse(userIdStr, out var userId))
                 return Unauthorized(new { Message = "Usuario no autenticado." });
 
             try
@@ -82,7 +70,7 @@ namespace SuperStock.API.Controllers
                         Cantidad = i.Cantidad
                     }).ToList(),
                     MetodoPago = dto.MetodoPago,
-                    CreatedBy = userId
+                    CreatedBy = userIdStr
                 };
 
                 var result = await _ventaService.Add(venta);
@@ -98,13 +86,9 @@ namespace SuperStock.API.Controllers
             }
         }
 
-        /// <summary>
-        /// PATCH /api/venta/{id}/anular
-        /// Anula una venta y restaura el stock.
-        /// </summary>
-        [HttpPatch("{id}/anular")]
+        [HttpPatch("{id:guid}/anular")]
         [Authorize(Roles = "admin,gerente")]
-        public async Task<IActionResult> Anular(string id)
+        public async Task<IActionResult> Anular(Guid id)
         {
             try
             {

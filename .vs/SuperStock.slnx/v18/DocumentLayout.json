@@ -1,70 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\rodri\\source\\repos\\SuperStock\\",
+  "WorkspaceRootPath": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.api\\helpers\\jsonvaluenormalizer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|c:\\users\\sofia\\onedrive\\documentos\\ciclo01_2026\\bases de datos_no relacionales\\superstock_cassandra\\superstockapi_v2\\superstock.api\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|solutionrelative:superstock.api\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|c:\\users\\sofia\\onedrive\\documentos\\ciclo01_2026\\bases de datos_no relacionales\\superstock_cassandra\\superstockapi_v2\\superstock.api\\helpers\\jsonvaluenormalizer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|solutionrelative:superstock.api\\helpers\\jsonvaluenormalizer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.api\\superstock.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|solutionrelative:superstock.api\\superstock.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A6A2C27F-A58D-100F-D4DC-B6F220036A5A}|SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.infrastructure\\superstock.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{A6A2C27F-A58D-100F-D4DC-B6F220036A5A}|SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj|solutionrelative:superstock.infrastructure\\superstock.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|solutionrelative:superstock.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A6A2C27F-A58D-100F-D4DC-B6F220036A5A}|SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.infrastructure\\persistence\\repositories\\productorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A6A2C27F-A58D-100F-D4DC-B6F220036A5A}|SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj|solutionrelative:superstock.infrastructure\\persistence\\repositories\\productorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1B54AE56-7F98-52F7-4838-6B5DB2F264CD}|SuperStock.Domain\\SuperStock.Domain.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.domain\\interfaces\\repositories\\iproductorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1B54AE56-7F98-52F7-4838-6B5DB2F264CD}|SuperStock.Domain\\SuperStock.Domain.csproj|solutionrelative:superstock.domain\\interfaces\\repositories\\iproductorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5D8C2859-28FF-8A31-9CD5-FD519D2E30B0}|SuperStock.Application\\SuperStock.Application.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.application\\services\\ventaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5D8C2859-28FF-8A31-9CD5-FD519D2E30B0}|SuperStock.Application\\SuperStock.Application.csproj|solutionrelative:superstock.application\\services\\ventaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A6A2C27F-A58D-100F-D4DC-B6F220036A5A}|SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.infrastructure\\persistence\\repositories\\baserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A6A2C27F-A58D-100F-D4DC-B6F220036A5A}|SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj|solutionrelative:superstock.infrastructure\\persistence\\repositories\\baserepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5D8C2859-28FF-8A31-9CD5-FD519D2E30B0}|SuperStock.Application\\SuperStock.Application.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.application\\services\\productoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5D8C2859-28FF-8A31-9CD5-FD519D2E30B0}|SuperStock.Application\\SuperStock.Application.csproj|solutionrelative:superstock.application\\services\\productoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.api\\controllers\\productocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|solutionrelative:superstock.api\\controllers\\productocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1B54AE56-7F98-52F7-4838-6B5DB2F264CD}|SuperStock.Domain\\SuperStock.Domain.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.domain\\entities\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1B54AE56-7F98-52F7-4838-6B5DB2F264CD}|SuperStock.Domain\\SuperStock.Domain.csproj|solutionrelative:superstock.domain\\entities\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1B54AE56-7F98-52F7-4838-6B5DB2F264CD}|SuperStock.Domain\\SuperStock.Domain.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.domain\\superstock.domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{1B54AE56-7F98-52F7-4838-6B5DB2F264CD}|SuperStock.Domain\\SuperStock.Domain.csproj|solutionrelative:superstock.domain\\superstock.domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|solutionrelative:superstock.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1B54AE56-7F98-52F7-4838-6B5DB2F264CD}|SuperStock.Domain\\SuperStock.Domain.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.domain\\entities\\producto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1B54AE56-7F98-52F7-4838-6B5DB2F264CD}|SuperStock.Domain\\SuperStock.Domain.csproj|solutionrelative:superstock.domain\\entities\\producto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.api\\controllers\\reportecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{30B524C1-EF21-9DEF-1C16-D7DC4E879969}|SuperStock.API\\SuperStock.API.csproj|solutionrelative:superstock.api\\controllers\\reportecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A6A2C27F-A58D-100F-D4DC-B6F220036A5A}|SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj|c:\\users\\rodri\\source\\repos\\superstock\\superstock.infrastructure\\persistence\\mongodbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A6A2C27F-A58D-100F-D4DC-B6F220036A5A}|SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj|solutionrelative:superstock.infrastructure\\persistence\\mongodbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -74,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -82,204 +26,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SuperStock.Infrastructure",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj",
-              "RelativeDocumentMoniker": "SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj",
-              "RelativeToolTip": "SuperStock.Infrastructure\\SuperStock.Infrastructure.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-04-12T02:30:58.417Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "VentaService.cs",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Application\\Services\\VentaService.cs",
-              "RelativeDocumentMoniker": "SuperStock.Application\\Services\\VentaService.cs",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Application\\Services\\VentaService.cs",
-              "RelativeToolTip": "SuperStock.Application\\Services\\VentaService.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAowDgAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-12T01:43:17.308Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ProductoService.cs",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Application\\Services\\ProductoService.cs",
-              "RelativeDocumentMoniker": "SuperStock.Application\\Services\\ProductoService.cs",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Application\\Services\\ProductoService.cs",
-              "RelativeToolTip": "SuperStock.Application\\Services\\ProductoService.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAiwD0AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-12T01:42:59.777Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ProductoRepository.cs",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Infrastructure\\Persistence\\Repositories\\ProductoRepository.cs",
-              "RelativeDocumentMoniker": "SuperStock.Infrastructure\\Persistence\\Repositories\\ProductoRepository.cs",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Infrastructure\\Persistence\\Repositories\\ProductoRepository.cs",
-              "RelativeToolTip": "SuperStock.Infrastructure\\Persistence\\Repositories\\ProductoRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-12T01:42:39.107Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "IProductoRepository.cs",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Domain\\Interfaces\\Repositories\\IProductoRepository.cs",
-              "RelativeDocumentMoniker": "SuperStock.Domain\\Interfaces\\Repositories\\IProductoRepository.cs",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Domain\\Interfaces\\Repositories\\IProductoRepository.cs",
-              "RelativeToolTip": "SuperStock.Domain\\Interfaces\\Repositories\\IProductoRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-12T01:42:24.019Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "SuperStock.Domain.csproj",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Domain\\SuperStock.Domain.csproj",
-              "RelativeDocumentMoniker": "SuperStock.Domain\\SuperStock.Domain.csproj",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Domain\\SuperStock.Domain.csproj",
-              "RelativeToolTip": "SuperStock.Domain\\SuperStock.Domain.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-04-12T01:02:37.051Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "BaseRepository.cs",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Infrastructure\\Persistence\\Repositories\\BaseRepository.cs",
-              "RelativeDocumentMoniker": "SuperStock.Infrastructure\\Persistence\\Repositories\\BaseRepository.cs",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Infrastructure\\Persistence\\Repositories\\BaseRepository.cs",
-              "RelativeToolTip": "SuperStock.Infrastructure\\Persistence\\Repositories\\BaseRepository.cs",
-              "ViewState": "AgIAAEgAAAAAAAAAAADwv2QAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-12T00:59:04.24Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "BaseEntity.cs",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Domain\\Entities\\BaseEntity.cs",
-              "RelativeDocumentMoniker": "SuperStock.Domain\\Entities\\BaseEntity.cs",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Domain\\Entities\\BaseEntity.cs",
-              "RelativeToolTip": "SuperStock.Domain\\Entities\\BaseEntity.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABcAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-12T00:58:11.869Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "JsonValueNormalizer.cs",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\Helpers\\JsonValueNormalizer.cs",
-              "RelativeDocumentMoniker": "SuperStock.API\\Helpers\\JsonValueNormalizer.cs",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\Helpers\\JsonValueNormalizer.cs",
-              "RelativeToolTip": "SuperStock.API\\Helpers\\JsonValueNormalizer.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAowEgAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-12T00:21:54.181Z",
+              "Title": "Dockerfile",
+              "DocumentMoniker": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.API\\Dockerfile",
+              "RelativeDocumentMoniker": "SuperStock.API\\Dockerfile",
+              "ToolTip": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.API\\Dockerfile",
+              "RelativeToolTip": "SuperStock.API\\Dockerfile",
+              "ViewState": "AgIAABgAAAAAAAAAAAAUwDYAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-05-23T01:25:55.072Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "SuperStock.API.csproj",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\SuperStock.API.csproj",
-              "RelativeDocumentMoniker": "SuperStock.API\\SuperStock.API.csproj",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\SuperStock.API.csproj",
-              "RelativeToolTip": "SuperStock.API\\SuperStock.API.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-04-12T00:20:40.477Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "ProductoController.cs",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\Controllers\\ProductoController.cs",
-              "RelativeDocumentMoniker": "SuperStock.API\\Controllers\\ProductoController.cs",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\Controllers\\ProductoController.cs",
-              "RelativeToolTip": "SuperStock.API\\Controllers\\ProductoController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
+              "Title": "JsonValueNormalizer.cs",
+              "DocumentMoniker": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.API\\Helpers\\JsonValueNormalizer.cs",
+              "RelativeDocumentMoniker": "SuperStock.API\\Helpers\\JsonValueNormalizer.cs",
+              "ToolTip": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.API\\Helpers\\JsonValueNormalizer.cs",
+              "RelativeToolTip": "SuperStock.API\\Helpers\\JsonValueNormalizer.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAiwCkAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-12T00:19:11.996Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "Producto.cs",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Domain\\Entities\\Producto.cs",
-              "RelativeDocumentMoniker": "SuperStock.Domain\\Entities\\Producto.cs",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Domain\\Entities\\Producto.cs",
-              "RelativeToolTip": "SuperStock.Domain\\Entities\\Producto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-12T00:08:47.996Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\appsettings.json",
-              "RelativeDocumentMoniker": "SuperStock.API\\appsettings.json",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\appsettings.json",
-              "RelativeToolTip": "SuperStock.API\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-04-11T23:27:32.288Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "ReporteController.cs",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\Controllers\\ReporteController.cs",
-              "RelativeDocumentMoniker": "SuperStock.API\\Controllers\\ReporteController.cs",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\Controllers\\ReporteController.cs",
-              "RelativeToolTip": "SuperStock.API\\Controllers\\ReporteController.cs",
-              "ViewState": "AgIAAIEAAAAAAAAAAAAswMIAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-11T23:20:53.16Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "MongoDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Infrastructure\\Persistence\\MongoDbContext.cs",
-              "RelativeDocumentMoniker": "SuperStock.Infrastructure\\Persistence\\MongoDbContext.cs",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.Infrastructure\\Persistence\\MongoDbContext.cs",
-              "RelativeToolTip": "SuperStock.Infrastructure\\Persistence\\MongoDbContext.cs",
-              "ViewState": "AgIAAGAAAAAAAAAAAAArwH8AAABJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-11T23:15:32.864Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\Program.cs",
-              "RelativeDocumentMoniker": "SuperStock.API\\Program.cs",
-              "ToolTip": "C:\\Users\\rodri\\source\\repos\\SuperStock\\SuperStock.API\\Program.cs",
-              "RelativeToolTip": "SuperStock.API\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-11T23:12:58.159Z"
+              "WhenOpened": "2026-05-23T01:16:31.678Z"
             }
           ]
         }

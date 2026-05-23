@@ -15,28 +15,21 @@ using SuperStock.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── Validar configuración requerida ─────────────────────────────────────
+// ── Validar configuracion JWT ───────────────────────────────────────
 var jwtKey = builder.Configuration["JWTKey"]
     ?? throw new InvalidOperationException("JWTKey no esta configurado en appsettings.json.");
 
 var jwtIssuer = builder.Configuration["JWTIssuer"]
     ?? throw new InvalidOperationException("JWTIssuer no esta configurado en appsettings.json.");
 
-// ── MongoDB (reemplaza builder.Services.AddDbContext<ApplicationDbContext>) ──
-// En Tickets, aquí se configuraba EF Core + SQL Server:
-//   builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//       options.UseSqlServer(connectionString));
-//
-// Ahora se registra MongoDbSettings y MongoDbContext como Singleton.
-// Singleton porque MongoClient internamente maneja un pool de conexiones
-// y es thread-safe (a diferencia de EF DbContext que es Scoped).
-builder.Services.Configure<MongoDbSettings>(
-    builder.Configuration.GetSection("MongoDb"));
-builder.Services.AddSingleton<MongoDbContext>();
+// ── Cassandra (reemplaza MongoDB) ────────────────────────────────────
+// CassandraDbContext es Singleton porque el driver maneja internamente
+// un pool de conexiones thread-safe (igual que MongoClient).
+builder.Services.Configure<CassandraSettings>(
+    builder.Configuration.GetSection("Cassandra"));
+builder.Services.AddSingleton<CassandraDbContext>();
 
-// ── JWT Authentication (mismo patrón que Tickets) ───────────────────────
-// Esta sección es idéntica al proyecto original. JWT no depende de
-// la base de datos; solo necesita la clave simétrica para firmar/verificar tokens.
+// ── JWT Authentication ──────────────────────────────────────────────
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -59,15 +52,15 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-// ── Swagger (mismo patrón que Tickets) ──────────────────────────────────
+// ── Swagger ─────────────────────────────────────────────────────────
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "SuperStock SV API",
+        Title = "SuperStock SV API (Cassandra)",
         Version = "v1",
-        Description = "API REST para gestion de inventario de supermercados con MongoDB"
+        Description = "API REST para gestion de inventario sobre cluster Cassandra"
     });
 
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -89,19 +82,14 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// ── Dependency Injection ────────────────────────────────────────────────
-// En Tickets, aquí se registraban:
-//   builder.Services.AddScoped<IUserRepository, UserRepository>();    → ahora IUsuarioRepository
-//   builder.Services.AddScoped<IRoleRepository, RoleRepository>();    → eliminado (rol es campo del usuario)
-//   builder.Services.AddScoped<ITicketsRepository, TicketsRepository>(); → ahora IProductoRepository, etc.
-//
-// Repositories son Scoped (uno por request HTTP), mismo patrón que Tickets.
+// ── Dependency Injection ────────────────────────────────────────────
+// Repositorios Cassandra (scoped: uno por request HTTP)
 builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 builder.Services.AddScoped<IVentaRepository, VentaRepository>();
 builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
-// Application services (misma estructura que AuthService y TicketsCase)
+// Application services
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ProductoService>();
 builder.Services.AddScoped<VentaService>();
@@ -112,46 +100,60 @@ builder.Services.AddScoped<IJWTService, JWTService>();
 
 var app = builder.Build();
 
-// ── Middleware Pipeline (mismo orden que Tickets) ────────────────────────
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// ── Middleware Pipeline ─────────────────────────────────────────────
+// Habilitamos Swagger en todos los entornos para facilitar pruebas en Docker.
+app.UseSwagger();
+app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-// ── Seed Data (reemplaza SeedDataAsync de Tickets) ──────────────────────
-// En Tickets, el seed creaba roles "Admin"/"User" via RoleManager
-// y un usuario admin via UserManager (ASP.NET Identity).
-// Aquí hacemos lo mismo pero directo en MongoDB con BCrypt.
+// ── Inicializacion de Cassandra con reintentos ─────────────────────
+// El cluster puede tardar en estar listo en Docker; reintentamos hasta 12 veces.
+await InitializeCassandraWithRetryAsync(app);
+
+// ── Seed Data ───────────────────────────────────────────────────────
 await SeedDataAsync(app);
 
 app.Run();
 
-/// <summary>
-/// Inicializa la base de datos: crea índices, aplica Schema Validation,
-/// y siembra el usuario administrador inicial.
-///
-/// CONCEPTOS APLICADOS:
-///   - Índices secundarios: se crean en InitializeAsync para optimizar consultas.
-///   - Schema Validation ($jsonSchema): se aplica vía collMod para garantizar estructura mínima.
-///   - TTL Index: se configura para limpiar automáticamente ventas anuladas tras 90 días.
-///   - Write Concern / Read Concern: configurados a nivel de MongoClient en MongoDbContext.
-/// </summary>
+static async Task InitializeCassandraWithRetryAsync(WebApplication app)
+{
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<CassandraDbContext>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+    const int maxRetries = 12;
+    const int delaySeconds = 10;
+
+    for (int attempt = 1; attempt <= maxRetries; attempt++)
+    {
+        try
+        {
+            await context.InitializeAsync();
+            logger.LogInformation("Cassandra inicializada correctamente en el intento {Attempt}.", attempt);
+            return;
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex,
+                "Cassandra no responde aun (intento {Attempt}/{Max}). Reintentando en {Delay}s...",
+                attempt, maxRetries, delaySeconds);
+
+            if (attempt == maxRetries)
+                throw;
+
+            await Task.Delay(TimeSpan.FromSeconds(delaySeconds));
+        }
+    }
+}
+
 static async Task SeedDataAsync(WebApplication app)
 {
     using var scope = app.Services.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<MongoDbContext>();
     var usuarioRepo = scope.ServiceProvider.GetRequiredService<IUsuarioRepository>();
 
-    // Crear índices y aplicar Schema Validation
-    await context.InitializeAsync();
-
-    // Crear usuario admin si no existe (mismo patrón que Tickets)
     const string adminEmail = "admin@superstock.sv";
     const string adminPassword = "Admin123!";
 

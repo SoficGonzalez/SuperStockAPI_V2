@@ -17,7 +17,7 @@ namespace SuperStock.Application.Services
             return await _proveedorRepository.AddAsync(proveedor);
         }
 
-        public async Task<Proveedor?> GetById(string id)
+        public async Task<Proveedor?> GetById(Guid id)
         {
             return await _proveedorRepository.GetByIdAsync(id);
         }
@@ -29,7 +29,7 @@ namespace SuperStock.Application.Services
             return await _proveedorRepository.SearchAsync(nombre, categoria, activo, page, pageSize);
         }
 
-        public async Task<Proveedor> Update(string id, Proveedor proveedor)
+        public async Task<Proveedor> Update(Guid id, Proveedor proveedor)
         {
             var existente = await _proveedorRepository.GetByIdAsync(id)
                 ?? throw new KeyNotFoundException($"Proveedor con id '{id}' no encontrado.");
@@ -40,7 +40,7 @@ namespace SuperStock.Application.Services
             return await _proveedorRepository.UpdateAsync(id, proveedor);
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(Guid id)
         {
             _ = await _proveedorRepository.GetByIdAsync(id)
                 ?? throw new KeyNotFoundException($"Proveedor con id '{id}' no encontrado.");

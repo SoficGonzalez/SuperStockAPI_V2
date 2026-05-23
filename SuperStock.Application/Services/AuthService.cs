@@ -4,19 +4,6 @@ using SuperStock.Domain.Interfaces.Repositories;
 
 namespace SuperStock.Application.Services
 {
-    /// <summary>
-    /// Reemplaza el AuthService del proyecto Tickets.
-    ///
-    /// En Tickets, el flujo era:
-    ///   1. UserRepository.CreateUser → UserManager.CreateAsync (Identity hasheaba el password)
-    ///   2. Login → UserManager.CheckPasswordAsync (Identity verificaba el hash)
-    ///
-    /// Aqui el flujo es:
-    ///   1. Register → BCrypt.HashPassword → UsuarioRepository.AddAsync (nosotros hasheamos)
-    ///   2. Login → UsuarioRepository.GetByEmail → BCrypt.Verify (nosotros verificamos)
-    ///
-    /// Misma logica de negocio, distinta infraestructura.
-    /// </summary>
     public class AuthService
     {
         private readonly IUsuarioRepository _usuarioRepository;
@@ -61,7 +48,6 @@ namespace SuperStock.Application.Services
             if (!user.Activo)
                 throw new UnauthorizedAccessException("Usuario desactivado. Contacte al administrador.");
 
-            // BCrypt.Verify compara el password plano contra el hash almacenado
             if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
                 throw new UnauthorizedAccessException("Usuario o contrasena invalidos.");
 

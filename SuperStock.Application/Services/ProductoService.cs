@@ -14,17 +14,13 @@ namespace SuperStock.Application.Services
 
         public async Task<Producto> Add(Producto producto)
         {
-            var existente = await _productoRepository.GetByCodigoBarrasAsync(producto.CodigoBarras);
-            if (existente != null)
-                throw new InvalidOperationException(
-                    $"Ya existe un producto con el codigo de barras '{producto.CodigoBarras}'.");
-
+            // La validacion de unicidad esta en el repo (Cassandra no tiene UNIQUE).
             return await _productoRepository.AddAsync(producto);
         }
 
-        public async Task<Producto?> GetById(string id)
+        public async Task<Producto?> GetById(Guid id)
         {
-            return await _productoRepository.GetByMongoIdAsync(id);
+            return await _productoRepository.GetByIdAsync(id);
         }
 
         public async Task<Producto?> GetByCodigoBarras(string codigoBarras)
@@ -40,9 +36,9 @@ namespace SuperStock.Application.Services
                 categoria, nombre, stockBajo, activo, page, pageSize);
         }
 
-        public async Task<Producto> Update(string id, Producto producto)
+        public async Task<Producto> Update(Guid id, Producto producto)
         {
-            var existente = await _productoRepository.GetByMongoIdAsync(id)
+            var existente = await _productoRepository.GetByIdAsync(id)
                 ?? throw new KeyNotFoundException($"Producto con id '{id}' no encontrado.");
 
             producto.CreatedAt = existente.CreatedAt;
@@ -51,9 +47,9 @@ namespace SuperStock.Application.Services
             return await _productoRepository.UpdateAsync(id, producto);
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> Delete(Guid id)
         {
-            var existente = await _productoRepository.GetByMongoIdAsync(id)
+            var existente = await _productoRepository.GetByIdAsync(id)
                 ?? throw new KeyNotFoundException($"Producto con id '{id}' no encontrado.");
 
             return await _productoRepository.DeleteAsync(id);

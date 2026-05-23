@@ -23,7 +23,7 @@ namespace SuperStock.Application.Services
         {
             foreach (var item in venta.Items)
             {
-                var producto = await _productoRepository.GetByMongoIdAsync(item.ProductoId)
+                var producto = await _productoRepository.GetByIdAsync(item.ProductoId)
                     ?? throw new KeyNotFoundException($"Producto '{item.ProductoId}' no encontrado.");
 
                 if (producto.StockActual < item.Cantidad)
@@ -46,7 +46,7 @@ namespace SuperStock.Application.Services
 
             foreach (var item in venta.Items)
             {
-                var producto = await _productoRepository.GetByMongoIdAsync(item.ProductoId)
+                var producto = await _productoRepository.GetByIdAsync(item.ProductoId)
                     ?? throw new KeyNotFoundException($"Producto '{item.ProductoId}' no encontrado al descontar stock.");
 
                 producto.StockActual -= item.Cantidad;
@@ -56,7 +56,7 @@ namespace SuperStock.Application.Services
             return ventaCreada;
         }
 
-        public async Task<Venta?> GetById(string id)
+        public async Task<Venta?> GetById(Guid id)
         {
             return await _ventaRepository.GetByIdAsync(id);
         }
@@ -64,7 +64,7 @@ namespace SuperStock.Application.Services
         public async Task<PaginatedResult<Venta>> Search(
             DateTime? fechaDesde,
             DateTime? fechaHasta,
-            string? cajeroId,
+            Guid? cajeroId,
             string? estado,
             int page = 1,
             int pageSize = 10)
@@ -76,7 +76,7 @@ namespace SuperStock.Application.Services
         /// <summary>
         /// Anula una venta y restaura el stock de los productos.
         /// </summary>
-        public async Task<Venta> Anular(string id)
+        public async Task<Venta> Anular(Guid id)
         {
             var venta = await _ventaRepository.GetByIdAsync(id)
                 ?? throw new KeyNotFoundException($"Venta '{id}' no encontrada.");
@@ -89,7 +89,7 @@ namespace SuperStock.Application.Services
 
             foreach (var item in venta.Items)
             {
-                var producto = await _productoRepository.GetByMongoIdAsync(item.ProductoId);
+                var producto = await _productoRepository.GetByIdAsync(item.ProductoId);
                 if (producto != null)
                 {
                     producto.StockActual += item.Cantidad;

@@ -2,7 +2,8 @@ namespace SuperStock.Domain.Entities
 {
     /// <summary>
     /// Documento de venta autocontenido.
-    /// Los items se embeben directamente para evitar JOINs en cobro de caja.
+    /// Los items se serializan como JSON dentro de una columna text
+    /// (Cassandra no soporta arrays anidados de objetos sin UDT).
     /// </summary>
     public class Venta : BaseEntity
     {
@@ -11,13 +12,13 @@ namespace SuperStock.Domain.Entities
         public DateTime Fecha { get; set; }
 
         /// <summary>
-        /// Referencia desnormalizada del cajero que proceso la venta.
+        /// Cajero (campos aplanados en Cassandra: cajero_id, cajero_nombre).
         /// </summary>
         public CajeroRef Cajero { get; set; } = new();
 
         /// <summary>
-        /// Items de la venta embebidos. Cada item es una copia snapshot
-        /// del producto al momento de la venta (precio puede cambiar despues).
+        /// Items de la venta. Se serializa como JSON en una columna text
+        /// llamada items_json para preservar la estructura.
         /// </summary>
         public List<VentaItem> Items { get; set; } = new();
 
@@ -30,14 +31,14 @@ namespace SuperStock.Domain.Entities
 
     public class CajeroRef
     {
-        public string UsuarioId { get; set; } = string.Empty;
+        public Guid UsuarioId { get; set; }
 
         public string Nombre { get; set; } = string.Empty;
     }
 
     public class VentaItem
     {
-        public string ProductoId { get; set; } = string.Empty;
+        public Guid ProductoId { get; set; }
 
         public string Nombre { get; set; } = string.Empty;
 

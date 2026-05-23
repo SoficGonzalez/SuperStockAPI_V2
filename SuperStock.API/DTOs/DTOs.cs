@@ -35,23 +35,18 @@ namespace SuperStock.API.DTOs
         public string UnidadMedida { get; set; } = string.Empty;
         public bool Activo { get; set; } = true;
 
-        /// <summary>
-        /// Referencia al proveedor (opcional al crear).
-        /// </summary>
         public ProveedorRefDTO? Proveedor { get; set; }
 
         /// <summary>
-        /// Atributos especificos de la categoria.
-        /// Se envia como JSON libre. Ejemplos:
-        ///   Perecederos: { "fecha_vencimiento": "2026-03-15", "temperatura": "0-4 C" }
-        ///   Limpieza:    { "concentracion": "5%", "uso_recomendado": "pisos" }
+        /// Atributos clave-valor en formato libre.
+        /// Cassandra los guarda como map<text,text>.
         /// </summary>
         public Dictionary<string, object>? Detalles { get; set; }
     }
 
     public class ProveedorRefDTO
     {
-        public string ProveedorId { get; set; } = string.Empty;
+        public Guid ProveedorId { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string Telefono { get; set; } = string.Empty;
     }
@@ -66,7 +61,7 @@ namespace SuperStock.API.DTOs
 
     public class VentaItemDTO
     {
-        public string ProductoId { get; set; } = string.Empty;
+        public Guid ProductoId { get; set; }
         public int Cantidad { get; set; }
     }
 

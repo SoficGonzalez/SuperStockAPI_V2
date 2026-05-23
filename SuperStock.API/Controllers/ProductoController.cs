@@ -2,17 +2,12 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SuperStock.API.DTOs;
+using SuperStock.API.Helpers;
 using SuperStock.Application.Services;
 using SuperStock.Domain.Entities;
-using SuperStock.API.Helpers;
 
 namespace SuperStock.API.Controllers
 {
-    /// <summary>
-    /// Reemplaza TicketController del proyecto Tickets.
-    /// Misma estructura: [Authorize], inyeccion del servicio, y UserId desde JWT claims.
-    /// Se agregan: CRUD completo, paginacion, y busqueda con multiples filtros.
-    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -27,7 +22,6 @@ namespace SuperStock.API.Controllers
 
         /// <summary>
         /// GET /api/producto?categoria=perecederos&amp;nombre=pollo&amp;stockBajo=true&amp;activo=true&amp;page=1&amp;pageSize=10
-        /// Busqueda con filtros multiples y paginacion.
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> Search(
@@ -45,8 +39,8 @@ namespace SuperStock.API.Controllers
         /// <summary>
         /// GET /api/producto/{id}
         /// </summary>
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
         {
             var producto = await _productoService.GetById(id);
             if (producto == null)
@@ -57,7 +51,6 @@ namespace SuperStock.API.Controllers
 
         /// <summary>
         /// GET /api/producto/barcode/{codigoBarras}
-        /// Endpoint especifico para escaneo en caja (POS).
         /// </summary>
         [HttpGet("barcode/{codigoBarras}")]
         public async Task<IActionResult> GetByBarcode(string codigoBarras)
@@ -69,10 +62,6 @@ namespace SuperStock.API.Controllers
             return Ok(producto);
         }
 
-        /// <summary>
-        /// POST /api/producto
-        /// Crear un nuevo producto.
-        /// </summary>
         [HttpPost]
         [Authorize(Roles = "admin,bodeguero")]
         public async Task<IActionResult> Create([FromBody] ProductoDTO dto)
@@ -80,7 +69,6 @@ namespace SuperStock.API.Controllers
             if (dto == null)
                 return BadRequest(new { Message = "El cuerpo de la solicitud es requerido." });
 
-            // UserId desde JWT claim (mismo patron que TicketController)
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized(new { Message = "Usuario no autenticado." });
@@ -100,7 +88,7 @@ namespace SuperStock.API.Controllers
                     StockMinimo = dto.StockMinimo,
                     UnidadMedida = dto.UnidadMedida,
                     Activo = dto.Activo,
-                    Detalles = JsonValueNormalizer.NormalizeDictionary(dto.Detalles),
+                    Detalles = JsonValueNormalizer.NormalizeToStringDictionary(dto.Detalles),
                     CreatedBy = userId,
                     Proveedor = dto.Proveedor != null ? new ProveedorRef
                     {
@@ -119,13 +107,9 @@ namespace SuperStock.API.Controllers
             }
         }
 
-        /// <summary>
-        /// PUT /api/producto/{id}
-        /// Actualizar un producto existente.
-        /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         [Authorize(Roles = "admin,bodeguero")]
-        public async Task<IActionResult> Update(string id, [FromBody] ProductoDTO dto)
+        public async Task<IActionResult> Update(Guid id, [FromBody] ProductoDTO dto)
         {
             if (dto == null)
                 return BadRequest(new { Message = "El cuerpo de la solicitud es requerido." });
@@ -145,7 +129,7 @@ namespace SuperStock.API.Controllers
                     StockMinimo = dto.StockMinimo,
                     UnidadMedida = dto.UnidadMedida,
                     Activo = dto.Activo,
-                    Detalles = JsonValueNormalizer.NormalizeDictionary(dto.Detalles),
+                    Detalles = JsonValueNormalizer.NormalizeToStringDictionary(dto.Detalles),
                     Proveedor = dto.Proveedor != null ? new ProveedorRef
                     {
                         ProveedorId = dto.Proveedor.ProveedorId,
@@ -163,13 +147,9 @@ namespace SuperStock.API.Controllers
             }
         }
 
-        /// <summary>
-        /// DELETE /api/producto/{id}
-        /// Soft delete (marca IsDeleted = true).
-        /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {

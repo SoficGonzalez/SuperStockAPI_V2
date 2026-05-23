@@ -19,9 +19,6 @@ namespace SuperStock.API.Controllers
             _proveedorService = proveedorService;
         }
 
-        /// <summary>
-        /// GET /api/proveedor?nombre=rico&amp;categoria=perecederos&amp;activo=true&amp;page=1&amp;pageSize=10
-        /// </summary>
         [HttpGet]
         public async Task<IActionResult> Search(
             [FromQuery] string? nombre,
@@ -34,8 +31,8 @@ namespace SuperStock.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id)
         {
             var proveedor = await _proveedorService.GetById(id);
             if (proveedor == null)
@@ -69,9 +66,9 @@ namespace SuperStock.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         [Authorize(Roles = "admin,gerente")]
-        public async Task<IActionResult> Update(string id, [FromBody] ProveedorDTO dto)
+        public async Task<IActionResult> Update(Guid id, [FromBody] ProveedorDTO dto)
         {
             if (dto == null)
                 return BadRequest(new { Message = "El cuerpo de la solicitud es requerido." });
@@ -99,9 +96,9 @@ namespace SuperStock.API.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {

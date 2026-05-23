@@ -8,11 +8,6 @@ using SuperStock.Domain.Interfaces;
 
 namespace SuperStock.Infrastructure.Security
 {
-    /// <summary>
-    /// Mismo patron que JWTService del proyecto Tickets.
-    /// Diferencia: en Tickets, los roles venian de ASP.NET Identity como IList&lt;string&gt;.
-    /// Aqui el rol es un campo directo del Usuario en MongoDB (un solo rol por usuario).
-    /// </summary>
     public class JWTService : IJWTService
     {
         private readonly IConfiguration _configuration;
@@ -26,7 +21,7 @@ namespace SuperStock.Infrastructure.Security
         {
             var claims = new List<Claim>
             {
-                new(ClaimTypes.NameIdentifier, usuario.Id),
+                new(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
                 new(ClaimTypes.Email, usuario.Email),
                 new(ClaimTypes.GivenName, usuario.NombreCompleto),
                 new(ClaimTypes.Role, usuario.Rol)
