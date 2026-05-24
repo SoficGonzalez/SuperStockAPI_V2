@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "uRDBc73KYug=",
+  "dgSpecHash": "xDT8Ok53JIM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.Application\\SuperStock.Application.csproj",
+  "projectFilePath": "C:\\Users\\edgar\\Downloads\\SuperStockAPI_V2-cassandra\\SuperStockAPI_V2-cassandra\\SuperStock.Application\\SuperStock.Application.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\sofia\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
-    "C:\\Users\\sofia\\.nuget\\packages\\mongodb.bson\\3.4.0\\mongodb.bson.3.4.0.nupkg.sha512"
+    "C:\\Users\\edgar\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
+    "C:\\Users\\edgar\\.nuget\\packages\\mongodb.bson\\3.4.0\\mongodb.bson.3.4.0.nupkg.sha512"
   ],
   "logs": []
 }

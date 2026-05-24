@@ -44,23 +44,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\sofia\\.nuget\\packages\\": {},
+    "C:\\Users\\edgar\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.Domain\\SuperStock.Domain.csproj",
+      "projectUniqueName": "C:\\Users\\edgar\\Downloads\\SuperStockAPI_V2-cassandra\\SuperStockAPI_V2-cassandra\\SuperStock.Domain\\SuperStock.Domain.csproj",
       "projectName": "SuperStock.Domain",
-      "projectPath": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.Domain\\SuperStock.Domain.csproj",
-      "packagesPath": "C:\\Users\\sofia\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sofia\\OneDrive\\Documentos\\Ciclo01_2026\\Bases de datos_no relacionales\\SuperStock_Cassandra\\SuperStockAPI_V2\\SuperStock.Domain\\obj\\",
+      "projectPath": "C:\\Users\\edgar\\Downloads\\SuperStockAPI_V2-cassandra\\SuperStockAPI_V2-cassandra\\SuperStock.Domain\\SuperStock.Domain.csproj",
+      "packagesPath": "C:\\Users\\edgar\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\edgar\\Downloads\\SuperStockAPI_V2-cassandra\\SuperStockAPI_V2-cassandra\\SuperStock.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\sofia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\edgar\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -69,7 +69,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
