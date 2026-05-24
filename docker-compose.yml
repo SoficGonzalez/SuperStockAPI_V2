@@ -1,16 +1,6 @@
 # ============================================================
 # SuperStock API + Cassandra Cluster (2 nodos)
 # ============================================================
-# Levanta: 2 nodos Cassandra + la API .NET conectada al cluster.
-#
-# Comandos utiles:
-#   docker-compose up -d --build           # primera vez (compila la API)
-#   docker-compose up -d                   # arranque normal
-#   docker-compose logs -f superstock-api  # logs en vivo de la API
-#   docker exec -it cassandra-seed nodetool status   # ver estado del cluster
-#   docker-compose down                    # detener todo
-#   docker-compose down -v                 # detener y borrar datos
-# ============================================================
 
 services:
   # ────────── Nodo SEED del cluster ─────────────────────────
@@ -28,10 +18,10 @@ services:
       - "9042:9042"
     volumes:
       - cassandra-seed-data:/var/lib/cassandra
+      - ./scripts:/scripts
     networks:
       - cassandra-net
     healthcheck:
-      # Considera saludable cuando el nodo aparezca como UN
       test: ["CMD-SHELL", "nodetool status | grep -E '^UN' || exit 1"]
       interval: 20s
       timeout: 10s
@@ -78,7 +68,6 @@ services:
         condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      # Variables sobreescriben appsettings.json (estilo dotnet config)
       - Cassandra__ContactPoints=cassandra-seed,cassandra-node2
       - Cassandra__Port=9042
       - Cassandra__LocalDataCenter=dc1
