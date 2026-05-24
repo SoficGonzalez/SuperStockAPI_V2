@@ -1,167 +1,400 @@
-# SuperStock SV - API REST con MongoDB
+# SuperStockAPI — Cassandra Edition con Backup & Restore
 
-Sistema Inteligente de Gestión de Inventario para Supermercados.
-Proyecto de Cátedra - Base de Datos II (No Relacionales) - Entrega 2.
+API REST de gestión de inventario sobre un clúster **Apache Cassandra de 2 nodos**, con soporte para **backup y restauración** mediante snapshots. Toda la infraestructura se orquesta con Docker Compose.
 
-## Requisitos Previos
+## Tabla de contenidos
 
-- .NET 10 SDK
-- MongoDB 7.0+ (corriendo en localhost:27017)
-- Un editor como Visual Studio, Rider o VS Code
+- [Stack tecnológico](#-stack-tecnológico)
+- [Arquitectura](#-arquitectura)
+- [Requisitos previos](#-requisitos-previos)
+- [Inicio rápido](#-inicio-rápido)
+- [Carga inicial de datos (seed)](#-carga-inicial-de-datos-seed)
+- [Endpoints principales](#-endpoints-principales)
+- [Sistema de backup y restauración](#-sistema-de-backup-y-restauración)
+- [Verificación del clúster](#-verificación-del-clúster)
+- [Estructura del proyecto](#-estructura-del-proyecto)
+- [Troubleshooting](#-troubleshooting)
 
-## Configuración
+---
 
-El archivo `SuperStock.API/appsettings.json` contiene la configuración de conexión:
+## Stack tecnológico
 
-```json
-{
-  "MongoDb": {
-    "ConnectionString": "mongodb://localhost:27017",
-    "DatabaseName": "superstock_sv"
-  },
-  "JWTKey": "clave-super-secreta-superstock-sv-2026-muy-larga-123456",
-  "JWTIssuer": "superstock-api",
-  "JWTLifeTime": 10
-}
-```
+| Componente | Tecnología |
+|---|---|
+| Backend | .NET 10 / ASP.NET Core |
+| Base de datos | Apache Cassandra (clúster de 2 nodos) |
+| Driver | CassandraCSharpDriver 3.22.0 |
+| Autenticación | JWT + BCrypt |
+| Orquestación | Docker Compose |
+| Arquitectura | Clean Architecture (Domain, Application, Infrastructure, API) |
 
-## Ejecución
+---
 
-```bash
-cd SuperStock.API
-dotnet restore
-dotnet run
-```
-
-La API se ejecuta en `https://localhost:5001` (o el puerto asignado). 
-Swagger UI disponible en: `https://localhost:5001/swagger`
-
-Al iniciar, el sistema crea automáticamente:
-- Índices secundarios en MongoDB para optimizar consultas.
-- Schema Validation ($jsonSchema) en las colecciones productos y ventas.
-- TTL Index para limpiar ventas anuladas después de 90 días.
-- Usuario admin por defecto: `admin@superstock.sv` / `Admin123!`
-
-## Arquitectura
-
-Proyecto en Clean Architecture con 4 capas:
+##  Arquitectura
 
 ```
-SuperStock.slnx
-├── SuperStock.Domain          → Entidades, Interfaces (sin dependencias externas)
-├── SuperStock.Application     → Servicios de negocio (BCrypt para auth)
-├── SuperStock.Infrastructure  → MongoDB.Driver, JWT, repositorios
-└── SuperStock.API             → Controllers, DTOs, Program.cs
+┌──────────────────────────────────────────────────┐
+│              docker-compose stack                 │
+│                                                   │
+│  ┌──────────────┐    ┌──────────────┐            │
+│  │ cassandra-   │◄──►│ cassandra-   │  RF=2      │
+│  │   seed       │    │   node2      │  dc1       │
+│  │ (172.x.0.2)  │    │ (172.x.0.3)  │  rack1     │
+│  └──────┬───────┘    └──────┬───────┘            │
+│         │                   │                     │
+│         └────────┬──────────┘                     │
+│                  │                                │
+│         ┌────────▼─────────┐                      │
+│         │ superstock-api   │  .NET 10             │
+│         │ (puerto 8080)    │                      │
+│         └──────────────────┘                      │
+└──────────────────────────────────────────────────┘
 ```
 
-Base de datos: **MongoDB** (reemplaza SQL Server + EF Core del proyecto base Tickets).
-Autenticación: **JWT + BCrypt** (reemplaza ASP.NET Identity).
+**Alta disponibilidad** garantizada por:
+- `ReplicationFactor = 2` (cada dato existe en ambos nodos)
+- `ConsistencyLevel = LocalOne` (basta con un nodo vivo para responder)
+- `DCAwareRoundRobinPolicy` (balanceo entre nodos del DC local)
 
-## Endpoints de la API
+---
 
-### Autenticación
+## Requisitos previos
 
-| Método | Ruta | Descripción | Acceso |
-|--------|------|-------------|--------|
-| POST | `/api/account/login` | Login, retorna JWT | Público |
-| POST | `/api/account/register` | Registrar usuario | Admin |
+- **Docker Desktop** con al menos **3 GB de RAM** asignados
+- **PowerShell 5+** (Windows) para scripts de backup
+- Puertos libres: `8080` (API) y `9042` (Cassandra)
 
-### Productos (CRUD + Filtros + Paginación)
+---
 
-| Método | Ruta | Descripción | Acceso |
-|--------|------|-------------|--------|
-| GET | `/api/producto` | Buscar con filtros y paginación | Autenticado |
-| GET | `/api/producto/{id}` | Obtener por ID | Autenticado |
-| GET | `/api/producto/barcode/{codigo}` | Obtener por código de barras | Autenticado |
-| POST | `/api/producto` | Crear producto | Admin, Bodeguero |
-| PUT | `/api/producto/{id}` | Actualizar producto | Admin, Bodeguero |
-| DELETE | `/api/producto/{id}` | Eliminar producto (soft delete) | Admin |
+## Inicio rápido
 
-**Filtros disponibles en GET /api/producto:**
-- `categoria` → Filtra por categoría exacta (perecederos, secos, cuidado_personal, limpieza)
-- `nombre` → Búsqueda parcial por nombre (case-insensitive)
-- `stockBajo` → true para mostrar solo productos con stock <= mínimo
-- `activo` → true/false para filtrar por estado
-- `page` → Número de página (default: 1)
-- `pageSize` → Resultados por página (default: 10)
+### 1. Limpiar contenedores previos (opcional)
 
-### Ventas
+Si tienes contenedores Cassandra anteriores corriendo:
 
-| Método | Ruta | Descripción | Acceso |
-|--------|------|-------------|--------|
-| GET | `/api/venta` | Buscar con filtros y paginación | Autenticado |
-| GET | `/api/venta/{id}` | Obtener por ID | Autenticado |
-| POST | `/api/venta` | Registrar venta (descuenta stock) | Admin, Cajero |
-| PATCH | `/api/venta/{id}/anular` | Anular venta (restaura stock) | Admin, Gerente |
+```powershell
+docker stop cassandra-seed cassandra-node2 cassandra-node3 2>$null
+docker rm cassandra-seed cassandra-node2 cassandra-node3 2>$null
+```
 
-**Filtros disponibles en GET /api/venta:**
-- `fechaDesde` / `fechaHasta` → Rango de fechas
-- `cajeroId` → Filtrar por cajero
-- `estado` → completada / anulada
+### 2. Levantar el stack completo
 
-### Proveedores (CRUD + Filtros + Paginación)
+Desde la raíz del proyecto:
 
-| Método | Ruta | Descripción | Acceso |
-|--------|------|-------------|--------|
-| GET | `/api/proveedor` | Buscar con filtros | Autenticado |
-| GET | `/api/proveedor/{id}` | Obtener por ID | Autenticado |
-| POST | `/api/proveedor` | Crear proveedor | Admin, Gerente |
-| PUT | `/api/proveedor/{id}` | Actualizar proveedor | Admin, Gerente |
-| DELETE | `/api/proveedor/{id}` | Eliminar (soft delete) | Admin |
+```powershell
+docker-compose up -d --build
+```
 
-### Reportes (Aggregation Pipeline)
+> La primera vez tarda **3-5 minutos** (compila la imagen de la API y descarga Cassandra).
 
-| Método | Ruta | Descripción | Acceso |
-|--------|------|-------------|--------|
-| GET | `/api/reporte/ventas-por-dia` | Resumen diario de ventas | Admin, Gerente |
-| GET | `/api/reporte/productos-stock-bajo` | Productos que necesitan restock | Admin, Gerente |
-| GET | `/api/reporte/ventas-por-categoria` | Top productos vendidos | Admin, Gerente |
+### 3. Verificar que los nodos estén operativos
 
-## Conceptos NoSQL Implementados
+Espera ~90 segundos y verifica:
 
-| Concepto | Dónde se implementa |
-|----------|---------------------|
-| **BSON** | MongoDB almacena todos los documentos en BSON; decimales como Decimal128 |
-| **Colección** | productos, ventas, proveedores, usuarios (en MongoDbContext) |
-| **Esquema dinámico** | Campo `Detalles` en Producto: Dictionary flexible por categoría |
-| **Desnormalización** | ProveedorRef embebido en Producto; CajeroRef y VentaItems embebidos en Venta |
-| **Embedding** | Items de venta y datos del cajero dentro del documento de Venta |
-| **Schema Validation ($jsonSchema)** | Validación en colecciones productos y ventas (MongoDbContext) |
-| **Campos requeridos (required)** | nombre, categoria, precioVenta, codigoBarras en productos |
-| **Tipos de datos BSON (bsonType)** | string, int, decimal, array, object validados en $jsonSchema |
-| **Patrón (pattern)** | Código de barras validado con regex `^[0-9]{8,14}$` |
-| **Rango (minimum)** | precioVenta >= 0, stockActual >= 0 |
-| **enum** | categoria limitada a valores válidos; estado y metodoPago en ventas |
-| **additionalProperties** | true en productos (permite polimorfismo del campo detalles) |
-| **validationLevel** | "moderate" en productos, "strict" en ventas |
-| **validationAction** | "error" en ambas colecciones (rechaza documentos inválidos) |
-| **collMod** | Usado para aplicar validación a colecciones existentes |
-| **Índice secundario** | Índices en categoria+precio, codigoBarras (único), nombre (texto), fecha |
-| **Cardinalidad** | codigoBarras tiene cardinalidad alta → índice único eficiente |
-| **TTL (Time to Live)** | Ventas anuladas se borran automáticamente después de 90 días |
-| **Aggregation Pipeline** | Reportes de ventas/día, stock bajo, ventas/categoría ($match, $group, $sort, $unwind, $project) |
-| **Write Concern** | WMajority: escritura confirmada por mayoría del Replica Set |
-| **Read Concern** | Majority: lecturas consistentes desde el Replica Set |
-| **Consistencia eventual vs ACID** | Write/Read Concern Majority para transacciones críticas (ventas) |
+```powershell
+docker exec -it cassandra-seed nodetool status
+```
 
-## Estructura de Colecciones MongoDB
+Ambos nodos deben aparecer con estado **`UN`** (Up/Normal):
 
-### productos (esquema polimórfico)
-Cada producto tiene campos base comunes y un campo `detalles` flexible que varía según la categoría. Esto es el concepto de **esquema dinámico**: los documentos dentro de una misma colección no tienen exactamente la misma estructura.
+```
+Datacenter: dc1
+=======================
+Status=Up/Down
+|/ State=Normal/Leaving/Joining/Moving
+--  Address     Load      Tokens  Owns  Host ID   Rack
+UN  172.x.x.x   ...       16      ?     ...       rack1
+UN  172.x.x.x   ...       16      ?     ...       rack1
+```
 
-### ventas (embedding / desnormalización)
-Los items de cada venta se embeben directamente en el documento de venta (no se referencian por ID). Esto elimina la necesidad de JOINs en la operación más frecuente del sistema (cobro en caja).
+### 4. Acceder a la API
 
-### proveedores
-Colección normalizada con referencia embebida (ProveedorRef) dentro de cada producto para lectura rápida.
+- **Swagger UI:** http://localhost:8080/swagger
+- **Credenciales por defecto:** `admin@superstock.sv` / `Admin123!`
 
-### usuarios
-Autenticación propia con BCrypt (sin ASP.NET Identity). Roles: admin, gerente, cajero, bodeguero.
+---
 
-## Estudiantes - Grupo D
+##  Carga inicial de datos (seed)
 
-- Sofía Cristina González González – 2025020179
-- Rodrigo Eduardo Herrera Coto – 2025020105
-- Jose Edgardo Jordan Guzman – 2025011211
-- Josue Adony Morales Torres – 2025010815
-- David Alexander Umaña Cortez – 2025011814
+El archivo `seed.db` contiene un script CQL con datos de prueba (usuarios, proveedores, productos y ventas).
+
+### Ejecutar el seed
+
+```powershell
+# Copiar el script al contenedor
+docker cp seed.db cassandra-seed:/tmp/seed.db
+
+# Ejecutarlo con cqlsh
+docker exec -it cassandra-seed cqlsh -f /tmp/seed.db
+```
+
+### Verificar la carga
+
+```powershell
+docker exec -it cassandra-seed cqlsh -e "SELECT count(*) FROM superstock.productos;"
+docker exec -it cassandra-seed cqlsh -e "SELECT count(*) FROM superstock.proveedores;"
+docker exec -it cassandra-seed cqlsh -e "SELECT nombre, stock_actual FROM superstock.productos;"
+```
+
+> Si aparecen warnings sobre "ya existe", es seguro ignorarlos — significa que algunos registros ya estaban cargados.
+
+---
+
+##  Endpoints principales
+
+| Método | Ruta | Descripción | Rol |
+|---|---|---|---|
+| `POST` | `/api/account/login` | Obtener JWT token | público |
+| `POST` | `/api/account/register` | Registrar usuario | admin |
+| `GET` | `/api/producto` | Buscar productos | autenticado |
+| `GET` | `/api/producto/{id}` | Obtener producto por ID | autenticado |
+| `GET` | `/api/producto/barcode/{codigo}` | Buscar por código de barras | autenticado |
+| `POST` | `/api/producto` | Crear producto | admin, bodeguero |
+| `PUT` | `/api/producto/{id}` | Actualizar producto | admin, bodeguero |
+| `DELETE` | `/api/producto/{id}` | Soft delete | admin |
+| `GET` | `/api/proveedor` | Buscar proveedores | autenticado |
+| `POST` | `/api/proveedor` | Crear proveedor | admin, gerente |
+| `GET` | `/api/venta` | Buscar ventas | autenticado |
+| `POST` | `/api/venta` | Registrar venta | admin, cajero |
+| `PATCH` | `/api/venta/{id}/anular` | Anular venta | admin, gerente |
+| `GET` | `/api/reporte/ventas-por-dia` | Reporte de ventas diarias | admin, gerente |
+| `GET` | `/api/reporte/productos-stock-bajo` | Productos con stock crítico | admin, gerente |
+| `GET` | `/api/reporte/ventas-por-categoria` | Top productos vendidos | admin, gerente |
+
+---
+
+##  Sistema de backup y restauración
+
+El proyecto incluye scripts para crear y restaurar snapshots del clúster Cassandra.
+
+### Estructura
+
+```
+scripts/
+├── backup-manual.ps1        ← Backup desde PowerShell (Windows)
+├── restore-manual.ps1       ← Restore desde PowerShell (Windows)
+├── restore-manual.sh        ← Restore desde Bash (Linux/Mac)
+└── medusa-auto-backup.sh    ← Backup automatizado (estilo Medusa)
+
+backups/
+└── manual/
+    └── backup_YYYYMMDD_HHMMSS/
+        ├── cassandra-seed.tar.gz
+        └── cassandra-node2.tar.gz
+```
+
+### 📦 Crear un backup manual
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\backup-manual.ps1
+```
+
+Esto ejecuta `nodetool snapshot` en ambos nodos, comprime los archivos y los descarga a `./backups/manual/`. El **tag** del backup se genera automáticamente con timestamp:
+
+```
+=== BACKUP ===
+Tag: backup_20260524_143000
+
+[cassandra-seed] snapshot...
+[cassandra-seed] exportar a PC...
+  OK: backups\manual\backup_20260524_143000\cassandra-seed.tar.gz
+[cassandra-node2] snapshot...
+[cassandra-node2] exportar a PC...
+  OK: backups\manual\backup_20260524_143000\cassandra-node2.tar.gz
+```
+
+**Apunta el tag** — lo necesitas para restaurar.
+
+###  Restaurar un backup
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\restore-manual.ps1 -Tag backup_20260524_143000
+```
+
+> **Advertencia:** El proceso de restore detiene la API, trunca las tablas del keyspace y restaura los datos del snapshot.
+
+###  Backup automatizado (Medusa)
+
+Si prefieres ejecutar el backup desde dentro del contenedor:
+
+```powershell
+docker exec cassandra-seed bash /scripts/medusa-auto-backup.sh
+```
+
+Esto crea un snapshot interno usando `nodetool snapshot` con timestamp automático.
+
+### Listar snapshots existentes
+
+```powershell
+docker exec -it cassandra-seed nodetool listsnapshots
+```
+
+### Eliminar snapshots viejos del contenedor
+
+```powershell
+docker exec -it cassandra-seed nodetool clearsnapshot superstock
+```
+
+---
+
+## Verificación del clúster
+
+### Estado de los nodos
+
+```powershell
+docker exec -it cassandra-seed nodetool status
+```
+
+### Información detallada del clúster
+
+```powershell
+docker exec -it cassandra-seed nodetool describecluster
+```
+
+### Información del nodo seed
+
+```powershell
+docker exec -it cassandra-seed nodetool info
+```
+
+### Explorar el keyspace
+
+```powershell
+docker exec -it cassandra-seed cqlsh -e "DESCRIBE KEYSPACE superstock"
+```
+
+### Logs de la API
+
+```powershell
+docker-compose logs -f superstock-api
+```
+
+---
+
+##  Estructura del proyecto
+
+```
+SuperStockAPI_V2/
+├── docker-compose.yml              ← Orquesta el stack (cluster + API)
+├── seed.db                         ← Script CQL con datos de prueba
+├── README.md
+│
+├── SuperStock.API/                 ← Capa de presentación
+│   ├── Controllers/
+│   ├── DTOs/
+│   ├── Helpers/
+│   ├── Dockerfile
+│   ├── Program.cs
+│   └── appsettings.json
+│
+├── SuperStock.Application/         ← Casos de uso
+│   └── Services/
+│
+├── SuperStock.Domain/              ← Entidades e interfaces
+│   ├── Entities/
+│   └── Interfaces/
+│
+├── SuperStock.Infrastructure/      ← Persistencia y seguridad
+│   ├── Persistence/
+│   │   ├── CassandraDbContext.cs
+│   │   └── Repositories/
+│   ├── Security/
+│   └── Settings/
+│
+├── scripts/                        ← Scripts de backup/restore
+│   ├── backup-manual.ps1
+│   ├── restore-manual.ps1
+│   ├── restore-manual.sh
+│   └── medusa-auto-backup.sh
+│
+└── backups/                        ← Almacén local de snapshots
+    └── manual/
+```
+
+---
+
+##  Troubleshooting
+
+### El contenedor de la API se cae al arrancar
+
+**Causa común:** Cassandra aún no está lista cuando la API intenta conectarse. La API implementa reintentos automáticos (hasta 12 intentos cada 10s), así que normalmente se resuelve solo.
+
+**Solución manual:**
+```powershell
+docker-compose restart superstock-api
+docker-compose logs --tail=30 superstock-api
+```
+
+### Error "Not enough replicas available for query at consistency QUORUM"
+
+Pasa cuando el clúster acaba de crear el keyspace y aún no propagó datos al segundo nodo. La API ya usa `LocalOne` para evitar esto, pero si lo cambias a `QUORUM` y aparece, simplemente reinicia la API después de unos segundos.
+
+### Conflict: container name already in use
+
+Hay contenedores residuales de un stack anterior:
+```powershell
+docker stop cassandra-seed cassandra-node2 cassandra-node3 2>$null
+docker rm cassandra-seed cassandra-node2 cassandra-node3 2>$null
+docker-compose up -d
+```
+
+### El build de Docker falla con error de NuGet (rutas de Windows)
+
+Indica que el proyecto contiene un `NuGet.Config` con rutas locales de Visual Studio. El Dockerfile ya genera uno limpio que apunta solo a `nuget.org`, así que reconstruye sin cache:
+```powershell
+docker-compose build --no-cache superstock-api
+```
+
+### Detener y limpiar todo
+
+```powershell
+docker-compose down       # detiene contenedores (conserva datos)
+docker-compose down -v    # detiene y borra TODOS los datos
+```
+
+---
+
+## 📊 Consultas útiles en cqlsh
+
+```sql
+-- Entrar a cqlsh
+docker exec -it cassandra-seed cqlsh
+
+-- Una vez dentro:
+USE superstock;
+
+-- Ver todas las tablas
+DESCRIBE TABLES;
+
+-- Contar registros por tabla
+SELECT count(*) FROM productos;
+SELECT count(*) FROM ventas;
+SELECT count(*) FROM proveedores;
+SELECT count(*) FROM usuarios;
+
+-- Ver productos activos con stock bajo
+SELECT nombre, stock_actual, stock_minimo FROM productos WHERE activo = true ALLOW FILTERING;
+
+-- Ver replicación del keyspace
+DESCRIBE KEYSPACE superstock;
+
+-- Salir
+EXIT;
+```
+
+---
+
+## 📝 Notas técnicas
+
+- **IDs:** se usa `Guid` (UUID en CQL) en todas las entidades
+- **Detalles del producto:** `map<text,text>` para flexibilidad
+- **Items de venta:** serializados como JSON en columna `text`
+- **Soft delete:** las eliminaciones marcan `is_deleted = true`
+- **Reportes:** agregaciones en memoria con LINQ (Cassandra no es DB analítica)
+- **Reintentos:** la API espera hasta 2 minutos a que Cassandra esté lista al arrancar
+
+---
+
+## 👥 Autores
+
+Proyecto académico de **Base de Datos II** — Universidad Evangélica de El Salvador, Ciclo 01-2026.
