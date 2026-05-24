@@ -1,0 +1,95 @@
+# ============================================================
+# SuperStock API + Cassandra Cluster (2 nodos)
+# ============================================================
+# Levanta: 2 nodos Cassandra + la API .NET conectada al cluster.
+#
+# Comandos utiles:
+#   docker-compose up -d --build           # primera vez (compila la API)
+#   docker-compose up -d                   # arranque normal
+#   docker-compose logs -f superstock-api  # logs en vivo de la API
+#   docker exec -it cassandra-seed nodetool status   # ver estado del cluster
+#   docker-compose down                    # detener todo
+#   docker-compose down -v                 # detener y borrar datos
+# ============================================================
+
+services:
+  # ────────── Nodo SEED del cluster ─────────────────────────
+  cassandra-seed:
+    image: cassandra:latest
+    container_name: cassandra-seed
+    environment:
+      - CASSANDRA_CLUSTER_NAME=UeesCluster
+      - CASSANDRA_SEEDS=cassandra-seed
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - MAX_HEAP_SIZE=512M
+      - HEAP_NEWSIZE=100M
+      - JVM_OPTS=-Xms512M -Xmx512M
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra-seed-data:/var/lib/cassandra
+    networks:
+      - cassandra-net
+    healthcheck:
+      # Considera saludable cuando el nodo aparezca como UN
+      test: ["CMD-SHELL", "nodetool status | grep -E '^UN' || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 15
+      start_period: 60s
+
+  # ────────── Nodo 2 del cluster ────────────────────────────
+  cassandra-node2:
+    image: cassandra:latest
+    container_name: cassandra-node2
+    environment:
+      - CASSANDRA_CLUSTER_NAME=UeesCluster
+      - CASSANDRA_SEEDS=cassandra-seed
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - MAX_HEAP_SIZE=512M
+      - HEAP_NEWSIZE=100M
+      - JVM_OPTS=-Xms512M -Xmx512M
+    depends_on:
+      cassandra-seed:
+        condition: service_healthy
+    volumes:
+      - cassandra-node2-data:/var/lib/cassandra
+    networks:
+      - cassandra-net
+    healthcheck:
+      test: ["CMD-SHELL", "nodetool status | grep -E '^UN' || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 15
+      start_period: 60s
+
+  # ────────── API .NET 10 ───────────────────────────────────
+  superstock-api:
+    build:
+      context: .
+      dockerfile: SuperStock.API/Dockerfile
+    container_name: superstock-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      cassandra-seed:
+        condition: service_healthy
+      cassandra-node2:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      # Variables sobreescriben appsettings.json (estilo dotnet config)
+      - Cassandra__ContactPoints=cassandra-seed,cassandra-node2
+      - Cassandra__Port=9042
+      - Cassandra__LocalDataCenter=dc1
+      - Cassandra__Keyspace=superstock
+      - Cassandra__ReplicationFactor=2
+    networks:
+      - cassandra-net
+
+networks:
+  cassandra-net:
+
+volumes:
+  cassandra-seed-data:
+  cassandra-node2-data:
